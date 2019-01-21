@@ -1,20 +1,18 @@
 <?php
 /**
- * @link http://phe.me
- * @copyright Copyright (c) 2014 Pheme
- * @license MIT http://opensource.org/licenses/MIT
+ * Created by PhpStorm.
+ * User: scepsis
+ * Date: 1/18/19
+ * Time: 4:52 PM
  */
 
 namespace pheme\jui;
 
 use yii\web\AssetBundle;
 
-/**
- * @author Aris Karageorgos <aris@phe.me>
- */
-class DateTimePickerLanguageAsset extends AssetBundle
+class DatepickerLanguageAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/jqueryui-timepicker-addon';
+    public $sourcePath = '@bower/jquery-ui';
     /**
      * @var boolean whether to automatically generate the needed language js files.
      * If this is true, the language js files will be determined based on the actual usage of [[DatePicker]]
