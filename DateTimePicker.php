@@ -52,6 +52,7 @@ class DateTimePicker extends DatePicker
         if ($language != 'en-US' && $language != 'en') {
             $view = $this->getView();
             $bundle = DateTimePickerLanguageAsset::register($view);
+            $bundleDate = DatepickerLanguageAsset::register($view);
             if ($bundle->autoGenerate) {
                 $fallbackLanguage = substr($language, 0, 2);
                 if ($fallbackLanguage !== $language && !file_exists(
@@ -63,13 +64,28 @@ class DateTimePicker extends DatePicker
                 $view->registerJsFile(
                     $bundle->baseUrl . "/dist/i18n/jquery-ui-timepicker-$language.js",
                     [
-                        'depends' => [JuiAsset::className()],
+                        'depends' => [JuiAsset::className(), DateTimePickerAsset::className()],
                     ]
                 );
+
+                if (file_exists(Yii::getAlias($bundleDate->sourcePath . "/ui/i18n/datepicker-$language.js"))) {
+                    $view->registerJsFile(
+                        $bundleDate->baseUrl . "/ui/i18n/datepicker-$language.js",
+                        [
+                            'depends' => [JuiAsset::className(), DateTimePickerAsset::className()],
+                        ]
+                    );
+                }
+
             }
             $options = Json::encode($this->clientOptions);
+
             $view->registerJs(
-                "$('#{$containerID}').{$picker}($.extend({}, $.{$picker}.regional['{$language}'], $options));"
+                "
+                   var dpOptions = {};
+                   dpOptions = $.extend($.datepicker.regional['{$language}'], $.timepicker.regional['{$language}']);
+                   $('#{$containerID}').{$picker}($.extend({}, dpOptions, $options));
+                "
             );
         } else {
             $this->registerClientOptions($picker, $containerID);
